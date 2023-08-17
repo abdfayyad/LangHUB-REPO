@@ -78,18 +78,19 @@ class InstituesTeacherController extends Controller
         ]);
     }
 
-
-
     public function cancelRequest(AcademyTeacher $order) {
         $order->delete();
         return response()->json([
             'status' => 200,
-            'message' => 'successful',
-            'data' => [],
+            'message' => 'request canceld successfully',
         ]);
     }
     public function show(Academy $academy) {
-        return $academy;
+        return response()->json([
+            'status' => 200,
+            'message' => 'academy detail',
+            'data' => $academy
+        ]);
     }
     // public function show(Academy $academy) {
     //     $info = Academy::with(['photos', 'offers'])
@@ -120,7 +121,7 @@ class InstituesTeacherController extends Controller
         ]);
         return response()->json([
             'status' => true,
-            'message' => 'success',
+            'message' => 'the lesson added to the course successfully',
             'data' => $lesson
         ]);
     }
@@ -159,7 +160,7 @@ class InstituesTeacherController extends Controller
         
         return response()->json([
             'status' => 200,
-            'message' => 'delete it successful',
+            'message' => 'lesson delete it successful',
         ]);
     }
 }
