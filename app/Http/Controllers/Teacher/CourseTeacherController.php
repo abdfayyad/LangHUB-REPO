@@ -22,14 +22,19 @@ class CourseTeacherController extends Controller
 	public function index() {
 		$teacher = Teacher::where('user_id', auth()->id())->first();
 		$courses = $teacher->courses()->get();
+        $students = $courses->map(function ($item){
+			return $item->students()->count();
+		});
 		$academies = $courses->map(function($item){
 			return $item->academy()->first();
 		});
 		$name = $academies->map(function($item) {
 			return collect($item)->only('name');
 		});
-		for ($i = 0;$i < count($courses);$i++)
+		for ($i = 0;$i < count($courses);$i++) {
 			$courses[$i]['academy_name'] = $name[$i]['name'];
+			$courses[$i]['student_number'] = $students[$i];
+		}
 		return response()->json([
 			'status' => 200,
 			'message' => 'done succeefully',
