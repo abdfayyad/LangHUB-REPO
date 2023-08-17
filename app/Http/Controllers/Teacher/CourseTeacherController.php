@@ -28,7 +28,9 @@ class CourseTeacherController extends Controller
 		$name = $academies->map(function($item) {
 			return collect($item)->only('name');
 		});
-		$courses[0]['academy_name'] = $name[0]['name'];
+		$courses->map(function ($item) use ($name){
+			$item->academy_name = $name;
+		});
 		return response()->json([
 			'status' => 200,
 			'message' => 'done succeefully',
