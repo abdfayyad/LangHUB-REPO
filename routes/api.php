@@ -125,7 +125,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','teacher']]
         Route::get('/', [CourseTeacherController::class, 'index']);
         Route::get('/{course}', [CourseTeacherController::class, 'show']);
         Route::get('/{course}/students', [CourseTeacherController::class, 'courseStudents']);
-
+        Route::post('{course}/add-marks', [CourseTeacherController::class,'addMarks']);
         Route::post('/{course}/add-lesson', [InstituesTeacherController::class, 'addLesson']);
         Route::get('/{course}/show-lessons', [InstituesTeacherController::class, 'showLessons']);
         Route::delete('{lesson}/delete-lesson', [InstituesTeacherController::class, 'destroy']);

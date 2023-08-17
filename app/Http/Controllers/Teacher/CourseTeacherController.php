@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Teacher;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Course;
+use App\Models\Mark;
 use App\Models\Teacher;
-
-use function PHPSTORM_META\map;
 
 class CourseTeacherController extends Controller
 {
@@ -121,6 +120,29 @@ class CourseTeacherController extends Controller
 			'status' => 200,
 			'message' => 'done succeefully',
 			'message' => 'course deleted succfully'
+		]);
+	}
+	public function addMarks(Request $request, Course $course) {
+		$data = $request->all();
+		$myArray = array($data);
+
+		foreach ($myArray as $value) {
+			foreach($value as $subKey => $subValue) {
+				if ($subValue >= 0 && $subValue <= 100) {
+					$mark = new Mark();
+					$mark->value = $subValue;
+					$mark->student_id = $subKey;
+					$mark->course_id = $course->id;
+					$mark->save();
+				}else {
+					echo ("You can't enter this value");
+				}
+			}
+		}
+		return response()->json([
+			'status' => 200,
+			'message' => 'marks added successfully',
+			'data' => [],
 		]);
 	}
 }

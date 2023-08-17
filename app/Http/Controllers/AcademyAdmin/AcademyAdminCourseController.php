@@ -9,7 +9,6 @@ use App\Models\AcademyTeacher;
 use App\Models\Course;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redis;
 
 class AcademyAdminCourseController extends Controller
 {
