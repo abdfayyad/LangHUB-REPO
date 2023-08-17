@@ -121,6 +121,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','teacher']]
         Route::post('upload-post', [ProfileTeacherController::class, 'uploadPost']);
         Route::get('my-posts', [ProfileTeacherController::class, 'myPosts']);
     });
+    Route::get('pending-requests', [InstituesTeacherController::class, 'pendingRequests']);
     Route::group(['prefix' => 'courses'], function() {
         Route::get('/', [CourseTeacherController::class, 'index']);
         Route::get('/{course}', [CourseTeacherController::class, 'show']);
@@ -135,7 +136,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','teacher']]
         Route::get('/', [InstituesTeacherController::class, 'index']);
         Route::get('/{academy}', [InstituesTeacherController::class, 'show']);
         Route::post('{id}/add-request', [InstituesTeacherController::class, 'store']);
-        Route::get('/pending-requests', [InstituesTeacherController::class, 'pendingRequests']);
+        //Route::get('/pending-requests', [InstituesTeacherController::class, 'pendingRequests']);
         Route::delete('{order}/cancel-request', [InstituesTeacherController::class, 'cancelRequest']);
         Route::get('students/{course}', [InstituesTeacherController::class, 'showStudents']);
         Route::get('courses-history', [InstituesTeacherController::class, 'coursesHistory']);

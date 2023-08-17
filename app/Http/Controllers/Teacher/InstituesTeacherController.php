@@ -36,7 +36,6 @@ class InstituesTeacherController extends Controller
     }
    
     
-
     public function store(Academy $id, Request $request) {
         $t_id = Teacher::where('user_id', auth()->id())->first();
         $condition = AcademyTeacher::where('teacher_id', $t_id->id)
@@ -67,15 +66,20 @@ class InstituesTeacherController extends Controller
         $requests = AcademyTeacher::where('approved', 0)
         ->where('teacher_id', $t_id->id)
         ->get();
+        $academies = $requests->map(function ($item) {
+            $academy = Academy::find($item->academy_id)->only(['name', 'location', 'image']);
+            return $academy;
+        });
+
         return response()->json([
             'status' => 200,
             'message' => 'successful',
-            'data' => $requests,
+            'data' => $academies,
         ]);
     }
 
 
-    
+
     public function cancelRequest(AcademyTeacher $order) {
         $order->delete();
         return response()->json([
