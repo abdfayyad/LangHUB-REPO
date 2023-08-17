@@ -74,6 +74,8 @@ class InstituesTeacherController extends Controller
         ]);
     }
 
+
+    
     public function cancelRequest(AcademyTeacher $order) {
         $order->delete();
         return response()->json([
