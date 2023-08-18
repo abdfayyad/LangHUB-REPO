@@ -23,7 +23,7 @@ class InstituesTeacherController extends Controller
             $academy = collect($academy)->only(['name', 'location', 'photo', 'rate']);
             return $academy;
         });
-        
+        return $academies;
         return response()->json([
             'status' => 200,
             'message' => 'successful',
