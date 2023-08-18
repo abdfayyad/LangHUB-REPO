@@ -44,11 +44,16 @@ class ProfileTeacherController extends Controller
 	public function show() {
 		$teacher = Teacher::where('user_id', auth()->id())->first();
 		$teacher['email'] = User::where('id' , auth()->id())->first()['email'];
-        $teacher['rate'] = RateController::getTeacherRate($teacher);
+		$posts = $teacher->posts()->get();
+		$posts = $posts->map(function ($item) {
+			return collect($item)->only(['id', 'title', 'image']);
+		});
+		$teacher = collect($teacher)->except(['created_at', 'updated_at', 'user_id']);
+		$teacher['posts'] = $posts;
     	return response()->json([
 			'status' => 200,
 			'message' => 'teacher info',
-    		'message' => $teacher
+    		'data' => $teacher
     	], 200);
 	}
     //Update a student's profile

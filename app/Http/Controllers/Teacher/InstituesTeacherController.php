@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Teacher;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Student\RateController;
 use App\Models\Academy;
 use App\Models\AcademyTeacher;
 use App\Models\Course;
@@ -17,7 +18,9 @@ class InstituesTeacherController extends Controller
     public function index() {
         $ids = AcademyTeacher::where('approved', 1)->get();
         $academies = $ids->map(function($item){
-            $academy = Academy::find($item->academy_id)->only(['name', 'photo', 'location']);
+            $academy = Academy::find($item->academy_id);
+            $academy['rate'] = RateController::getAcademyRate($academy);
+            $academy = collect($academy)->only(['name', 'location', 'photo', 'rate']);
             return $academy;
         });
         return response()->json([
@@ -77,6 +80,8 @@ class InstituesTeacherController extends Controller
         ]);
     }
     public function show(Academy $academy) {
+        $academy['rate'] = RateController::getAcademyRate($academy);
+        $academy = collect($academy)->except(['created_at', 'updated_at', 'academy_adminstrator_id']);
         return response()->json([
             'status' => 200,
             'message' => 'academy detail',
