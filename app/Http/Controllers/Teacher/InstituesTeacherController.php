@@ -16,26 +16,17 @@ class InstituesTeacherController extends Controller
 {
     public function index() {
         $ids = AcademyTeacher::where('approved', 1)->get();
-        $ids = $ids->map(function($item){
-            return collect($item)->only('academy_id')->all();
+        $academies = $ids->map(function($item){
+            $academy = Academy::find($item->academy_id)->only(['name', 'photo', 'location']);
+            return $academy;
         });
-        $ids = $ids->map(function($item){
-            return ($item['academy_id']);
-        });
-        $data = [];
-        foreach ($ids as $id) {
-            $academie = Academy::find($id)->only(['name', 'photo', 'location']);
-
-            $data[] = $academie;
-        }
         return response()->json([
             'status' => 200,
             'message' => 'successful',
-            'data' => $data,
+            'data' => $academies,
         ]);
     }
-   
-    
+
     public function store(Academy $id, Request $request) {
         $t_id = Teacher::where('user_id', auth()->id())->first();
         $condition = AcademyTeacher::where('teacher_id', $t_id->id)
@@ -67,7 +58,7 @@ class InstituesTeacherController extends Controller
         ->where('teacher_id', $t_id->id)
         ->get();
         $academies = $requests->map(function ($item) {
-            $academy = Academy::find($item->academy_id)->only(['name', 'location', 'image']);
+            $academy = Academy::find($item->academy_id)->only(['id', 'name', 'location', 'image']);
             return $academy;
         });
 

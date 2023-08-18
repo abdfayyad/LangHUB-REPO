@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\Student\RateController;
 use Illuminate\Http\Request;
 use App\Models\Teacher;
+use App\Models\TeacherPost;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
@@ -15,7 +16,7 @@ class ProfileTeacherController extends Controller
 		$courseImage = $request->file('image');
 		$imageName = time().$courseImage->getClientOriginalName();
 		$courseImage->move(public_path('course-images'), $courseImage);
-		$imageUrl = "teacher/images/$imageName";
+		$imageUrl = asset("teacher/post-images", $imageName);
 		return $imageUrl;
 	}
 
@@ -35,8 +36,9 @@ class ProfileTeacherController extends Controller
 	    $teacher->update(['password' => Hash::make($validatedData['new_password'])]);
 
 	    return response()->json([
-	    	'success' => 'Password changed successfully'
-	    ], 200);
+			'status' => 200,
+			'message' => 'Password changed successfully'
+	    ]);
 	}
     //Show a student's profile
 	public function show() {
@@ -44,7 +46,9 @@ class ProfileTeacherController extends Controller
 		$teacher['email'] = User::where('id' , auth()->id())->first()['email'];
         $teacher['rate'] = RateController::getTeacherRate($teacher);
     	return response()->json([
-    		'teacher info' => $teacher
+			'status' => 200,
+			'message' => 'teacher info',
+    		'message' => $teacher
     	], 200);
 	}
     //Update a student's profile
@@ -75,7 +79,7 @@ class ProfileTeacherController extends Controller
         ]);
         return response()->json([
             'status' => 200,
-            'message' => 'add post successfully',
+            'message' => 'post added successfully',
             'data' => $post
         ]);
     }
@@ -88,4 +92,11 @@ class ProfileTeacherController extends Controller
             'data' => $posts
         ]);
     }
+	public function deletePost(TeacherPost $post) {
+		$post->delete();
+		return response()->json([
+			'status' => 200,
+			'message' => 'post deleted successfully'
+		]);
+	}
 }

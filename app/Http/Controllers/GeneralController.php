@@ -7,8 +7,6 @@ use App\Models\Academy;
 use App\Models\Course;
 use App\Models\Offer;
 use App\Models\Teacher;
-use Illuminate\Http\Request;
-use Illuminate\Notifications\Action;
 
 class GeneralController extends Controller
 {

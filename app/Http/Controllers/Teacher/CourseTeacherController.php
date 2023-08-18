@@ -46,55 +46,11 @@ class CourseTeacherController extends Controller
 	public function show(Course $course) {
 		return response()->json([
 			'status' => 200,
-			'message' => 'done succeefully',
-			'course' => $course->first()
+			'message' => 'course details',
+			'course' => $course
 		]);
 	}
 
-	//Teacher can create courses
-    public function createCourse(Request $request) {
-        $validatedData = $request->validate([
-	        'title' => 'required|string|max:255',
-	        'description' => 'required|string',
-            'price' => 'required|integer',
-			'hours' => 'required|integer',
-			'seats' => 'required|integer',
-			'course_image' => 'required|image',
-	        // other fields to validate
-	    ]);
-		$imageUrl = '';
-		if ($request->hasFile('course_image')) {
-			$imageUrl = $this->uploadCourseImage($request);
-		}
-        $teacher = Teacher::where('user_id', auth()->id())->first();
-        
-    	$course = Course::query()->create($validatedData +
-		['course_image' => $imageUrl]);
-
-		$course->teachers()->attach($teacher->id);
-    	return response()->json([
-    		'success' => 'Course created successfully',
-    		'course' => $course
-    	]);
-	}
-    // update Course Information
-	public function updateCourse(Request $request, Course $course) {
-	    $validatedData = $request->validate([
-	        'title' => 'required|string|max:255',
-	        'description' => 'required|string',
-            'price' => 'required|integer',
-			'hours' => 'required|integer',
-			'seats' => 'required|integer',
-			'course_image' => 'required|image',
-	        // other fields to validate
-	    ]);
-    	$course->update($validatedData);
-
-    	return response()->json([
-    		'success' => 'Course updated successfully',
-    		'course' => $course
-    	]);
-	}
     // Display a list of students enrolled in a course
 	public function courseStudents(Course $course) {
         //$teacher = Teacher::where('user_id', auth()->id())->first();
@@ -104,6 +60,8 @@ class CourseTeacherController extends Controller
 		});
 
 	    return response()->json([
+			'status' => 200,
+			'message' => 'Students in this course',
 	    	'students' => $students
 	    ]);
 	}

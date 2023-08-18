@@ -7,7 +7,6 @@ use App\Http\Controllers\AcademyAdmin\AcademyAdminProfilecontroller;
 use App\Http\Controllers\AcademyAdmin\AcademyAdminStudentController;
 use App\Http\Controllers\AcademyAdmin\AcademyAdminTeacherController;
 use App\Http\Controllers\AcademyAdmin\AuthAcademyController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
@@ -30,8 +29,6 @@ use App\Http\Controllers\Student\RateController;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SuperAdmin\RequestMangeController;
-use App\Models\OfferStudent;
-use App\Models\Role;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,6 +117,7 @@ Route::group(['prefix' => 'teacher', 'middleware' => ['auth:sanctum','teacher']]
         Route::post('/change-password', [ProfileTeacherController::class, 'changePassword']);
         Route::post('upload-post', [ProfileTeacherController::class, 'uploadPost']);
         Route::get('my-posts', [ProfileTeacherController::class, 'myPosts']);
+        Route::delete('delete-post/{post}', [ProfileTeacherController::class, 'deletePost']);
     });
     Route::get('pending-requests', [InstituesTeacherController::class, 'pendingRequests']);
     Route::group(['prefix' => 'courses'], function() {
