@@ -21,6 +21,7 @@ class InstituesTeacherController extends Controller
             $academy = Academy::find($item->academy_id);
             $academy['rate'] = RateController::getAcademyRate($academy);
             $academy = collect($academy)->only(['name', 'location', 'rate']);
+            $academy['photo'] = $item->photo;
             return $academy;
         });
         return $academies;
