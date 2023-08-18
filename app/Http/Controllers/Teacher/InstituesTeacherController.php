@@ -20,7 +20,7 @@ class InstituesTeacherController extends Controller
         $academies = $ids->map(function($item){
             $academy = Academy::find($item->academy_id);
             $academy['rate'] = RateController::getAcademyRate($academy);
-            $academy = collect($academy)->only(['name', 'location', 'rate']);
+            $academy = collect($academy)->only(['name', 'location', 'rate','id']);
             $academy['photo'] = $item->photo;
             return $academy;
         });
